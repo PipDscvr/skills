@@ -1,0 +1,12 @@
+version: 1
+project: example-claude-codex-security
+workflow: implement-review-security
+
+agents:
+  implementer: claude
+  reviewer: codex
+  security_reviewer: codex
+  fixer: claude
+
+review_loop:
+  max_cycles: 3

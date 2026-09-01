@@ -1,0 +1,11 @@
+version: 1
+project: gst-ui-admin-portal
+workflow: implement-review-fix
+
+agents:
+  implementer: claude
+  reviewer: claude
+  fixer: claude
+
+review_loop:
+  max_cycles: 3

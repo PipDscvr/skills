@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PipDscvr/skills/schemas/workflow.schema.json",
+  "title": "Skills workflow",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "name", "description", "required_roles", "initial_steps", "review_loop", "completion"],
+  "properties": {
+    "version": { "const": 1 },
+    "name": { "$ref": "#/$defs/hyphenatedName" },
+    "description": { "type": "string", "minLength": 1 },
+    "required_roles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/role" }
+    },
+    "initial_steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" }
+    },
+    "review_loop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["review_steps", "remediation_steps", "max_cycles", "hard_max_cycles", "blocking_severities", "non_blocking_severities", "on_limit"],
+      "properties": {
+        "review_steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } },
+        "remediation_steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } },
+        "max_cycles": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "hard_max_cycles": { "const": 5 },
+        "blocking_severities": { "const": ["P0", "P1", "P2"] },
+        "non_blocking_severities": { "const": ["P3"] },
+        "on_limit": {
+          "const": {
+            "state": "HUMAN_INTERVENTION_REQUIRED",
+            "action": "request_human_decision"
+          }
+        }
+      }
+    },
+    "completion": {
+      "const": { "success_state": "READY_FOR_HUMAN_REVIEW" }
+    }
+  },
+  "$defs": {
+    "hyphenatedName": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "role": {
+      "enum": ["implementer", "reviewer", "fixer", "security_reviewer", "architecture_reviewer"]
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "skill", "role"],
+      "properties": {
+        "id": { "$ref": "#/$defs/hyphenatedName" },
+        "skill": { "$ref": "#/$defs/hyphenatedName" },
+        "role": { "$ref": "#/$defs/role" }
+      }
+    }
+  }
+}

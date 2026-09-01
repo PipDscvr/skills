@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PipDscvr/skills/schemas/profile.schema.json",
+  "title": "Project skills profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "project", "workflow", "agents"],
+  "properties": {
+    "version": { "const": 1 },
+    "project": { "type": "string", "minLength": 1 },
+    "workflow": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "agents": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "implementer": { "$ref": "#/$defs/agent" },
+        "reviewer": { "$ref": "#/$defs/agent" },
+        "fixer": { "$ref": "#/$defs/agent" },
+        "security_reviewer": { "$ref": "#/$defs/agent" },
+        "architecture_reviewer": { "$ref": "#/$defs/agent" }
+      }
+    },
+    "review_loop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_cycles"],
+      "properties": {
+        "max_cycles": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    }
+  },
+  "$defs": {
+    "agent": { "type": "string", "minLength": 1, "pattern": "\\S" }
+  }
+}
