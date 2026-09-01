@@ -1,2 +1,2 @@
-# skills-and-prompts
-Collection of skills and prompts
+# skills
+Collection of skills
