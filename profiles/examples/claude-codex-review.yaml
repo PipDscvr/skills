@@ -1,0 +1,11 @@
+version: 1
+project: example-claude-codex-review
+workflow: implement-review-fix
+
+agents:
+  implementer: claude
+  reviewer: codex
+  fixer: claude
+
+review_loop:
+  max_cycles: 3

@@ -1,0 +1,39 @@
+version: 1
+name: implement-review-fix
+description: Implement, verify, review, and remediate blocking findings.
+
+required_roles:
+  - implementer
+  - reviewer
+  - fixer
+
+initial_steps:
+  - id: implement
+    skill: implement-feature
+    role: implementer
+  - id: verify
+    skill: final-verification
+    role: implementer
+
+review_loop:
+  review_steps:
+    - id: code-review
+      skill: code-review
+      role: reviewer
+  remediation_steps:
+    - id: fix
+      skill: fix-review-findings
+      role: fixer
+    - id: verify-after-fix
+      skill: final-verification
+      role: fixer
+  max_cycles: 3
+  hard_max_cycles: 5
+  blocking_severities: [P0, P1, P2]
+  non_blocking_severities: [P3]
+  on_limit:
+    state: HUMAN_INTERVENTION_REQUIRED
+    action: request_human_decision
+
+completion:
+  success_state: READY_FOR_HUMAN_REVIEW
